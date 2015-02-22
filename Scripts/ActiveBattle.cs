@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
+// commit by ograda, teste ghub change versions..
+
 public class ActiveBattle : MonoBehaviour {
 
 	PlayerBehaviour player; //The main player script
