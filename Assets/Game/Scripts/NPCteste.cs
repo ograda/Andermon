@@ -4,6 +4,7 @@ using System.Collections;
 public class NPCteste : MonoBehaviour {
 	
 	Animator animator;
+	public string[] text;
 	
 	void Start () {
 		animator = GetComponent<Animator> ();
@@ -11,6 +12,6 @@ public class NPCteste : MonoBehaviour {
 	
 	void talk(int facingDirection){
 		animator.SetInteger ("Direction", facingDirection);
-		Debug.Log ("Hello");
+		Debug.Log (text[0]);
 	}
 }

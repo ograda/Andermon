@@ -36,7 +36,7 @@ public class PlayerBehaviour : MonoBehaviour {
 		playerTeam [4] = new Andermon (0, "Kliy", "MeuMon", 2, Andermon.Type.normal, 10, 10, 3, 1, 2, 50, Andermon.Condition.alive);
 		playerTeam [5] = new Andermon (0, "Kliy", "MeuMon", 2, Andermon.Type.normal, 10, 10, 3, 1, 2, 50, Andermon.Condition.alive);
 		enemyTeam = new Andermon[6];
-		enemyTeam [0] = new Andermon (2, "Ratty", "Ratty", 1, Andermon.Type.normal, 6, 6, 2, 0, 1, 45, Andermon.Condition.alive);
+		enemyTeam [0] = new Andermon (0, "Ratty", "Ratty", 1, Andermon.Type.normal, 6, 6, 2, 0, 1, 45, Andermon.Condition.alive);
 		enemyTeam [1] = new Andermon (0, "Ratty", "Ratty", 1, Andermon.Type.normal, 6, 6, 2, 0, 1, 45, Andermon.Condition.alive);
 		enemyTeam [2] = new Andermon (0, "Ratty", "Ratty", 1, Andermon.Type.normal, 6, 6, 2, 0, 1, 45, Andermon.Condition.alive);
 		enemyTeam [3] = new Andermon (0, "Ratty", "Ratty", 1, Andermon.Type.normal, 6, 6, 2, 0, 1, 45, Andermon.Condition.alive);
@@ -83,20 +83,6 @@ public class PlayerBehaviour : MonoBehaviour {
 
 			aux += Mathf.Abs ((int)moveH); //Temporary
 			aux += Mathf.Abs ((int)moveV); //Temporary
-		}
-
-		//Deletar depois, implementar mecanismo de batalha descente
-		if (aux >= aux2) {
-			inCombat = true;
-			aux = 0; //del
-			aux2 = Random.Range (50, 150); //del
-			if(terrain) sceneBattleName = "BattleForest"; //DELETAR
-			else sceneBattleName = "BattleBeach"; //DELETAR, temp
-			StartBattle();
-			rigidbody2D.velocity = new Vector2 (0, 0);
-			animator.SetInteger ("HorizontalSpeed", 0);
-			animator.SetInteger ("VerticalSpeed", 0);
-			//if(aux2 <= 100) terrain = !terrain; //DELETAR, temp
 		}
 	}
 	
@@ -157,6 +143,17 @@ public class PlayerBehaviour : MonoBehaviour {
 		if (hit = Physics2D.Raycast (startPoint, direction, distance)) {
 			if(hit.collider.tag == "NPC"){
 				hit.collider.SendMessage("talk", facingDirection);
+			}
+			if(hit.collider.tag == "AndermonP"){
+				AndermonPassive script;
+				inCombat = true;
+				currentSceneBattleName = "BattleForest";
+				script = hit.collider.GetComponent<AndermonPassive>();
+				enemyTeam = script.GenerateTeam(facingDirection);
+				StartBattle();
+				rigidbody2D.velocity = new Vector2 (0, 0);
+				animator.SetInteger ("HorizontalSpeed", 0);
+				animator.SetInteger ("VerticalSpeed", 0);
 			}
 		}
 	}
