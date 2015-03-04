@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="8" height="8" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="tilea2" tilewidth="32" tileheight="32">
+  <image source="../Visual/tilea2.png" width="512" height="384"/>
+ </tileset>
+ <tileset firstgid="193" name="tileb" tilewidth="32" tileheight="32">
+  <image source="../Visual/tileb.png" width="512" height="512"/>
+  <tile id="100">
+   <objectgroup draworder="index">
+    <object id="0" x="0" y="-5" width="32" height="36"/>
+   </objectgroup>
+  </tile>
+  <tile id="101">
+   <objectgroup draworder="index">
+    <object id="0" x="-1" y="2" width="34" height="30"/>
+   </objectgroup>
+  </tile>
+  <tile id="117">
+   <objectgroup draworder="index">
+    <object id="0" x="-1" y="-2" width="33" height="32"/>
+   </objectgroup>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 1" width="8" height="8">
+  <data encoding="base64" compression="zlib">
+   eJxjYMAPTJAwIxofHdNCnpHGGACgLQXN
+  </data>
+ </layer>
+ <layer name="Tile Layer 2" width="8" height="8">
+  <data encoding="base64" compression="zlib">
+   eJxjYBj6QI0RwVZlxBQzY2TAADAxAB8TAOM=
+  </data>
+ </layer>
+</map>

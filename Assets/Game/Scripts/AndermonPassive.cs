@@ -5,6 +5,7 @@ public class AndermonPassive : MonoBehaviour {
 	
 	Animator animator;
 	public string[] text;
+	public string terrainName;
 	public Andermon[] enemyTeam;
 
 	/// <summary>
@@ -31,6 +32,10 @@ public class AndermonPassive : MonoBehaviour {
 		enemyTeam [4] = new Andermon (2, "Ratty", "Ratty", 1, Andermon.Type.normal, 6, 6, 2, 0, 1, 45, Andermon.Condition.alive);
 		enemyTeam [5] = new Andermon (0, "Ratty", "Ratty", 1, Andermon.Type.normal, 6, 6, 2, 0, 1, 45, Andermon.Condition.alive);
 		return enemyTeam;
+	}
+
+	public string Terrain(){
+		return terrainName;
 	}
 
 }

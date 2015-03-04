@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Andermon : MonoBehaviour {
+public class Andermon {
 
 	public enum Type{
 		water,
@@ -23,8 +23,8 @@ public class Andermon : MonoBehaviour {
 	};
 
 	public int id;
-	public string name;
-	public string nick_name;
+	public string orignalName;
+	public string nickName;
 	public Type type;
 	public int level;
 	public int experience;
@@ -45,8 +45,8 @@ public class Andermon : MonoBehaviour {
 	//Construtor para o player e trainer
 	public Andermon(int id, string name, string nick_name, int level, Type type, int maxHealth, int actualHealth, int attack, int magic, int defense, int agility, Condition condition){
 		this.id = id;
-		this.name = name;
-		this.nick_name = nick_name;
+		this.orignalName = name;
+		this.nickName = nick_name;
 		this.level = level;
 		this.experience = 0;
 		this.type = type;
@@ -66,8 +66,8 @@ public class Andermon : MonoBehaviour {
 	//Construtor para wild
 	public Andermon(int id, string name, int level,Type type, int maxHealth, int attack, int magic, int defense, int agility){
 		this.id = id;
-		this.name = name;
-		this.nick_name = name;
+		this.orignalName = name;
+		this.nickName = name;
 		this.level = level;
 		this.experience = 0;
 		this.type = type;

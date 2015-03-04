@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="tilea2" tilewidth="32" tileheight="32">
+  <image source="../Visual/tilea2.png" width="512" height="384"/>
+ </tileset>
+ <tileset firstgid="193" name="tileb" tilewidth="32" tileheight="32">
+  <image source="../Visual/tileb.png" width="512" height="512"/>
+  <tile id="112">
+   <objectgroup draworder="index">
+    <object id="0" x="0.545455" y="32.5455">
+     <polyline points="0,0 0,-34.5455 32.3636,-34"/>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="113">
+   <objectgroup draworder="index">
+    <object id="0" x="0.363636" y="-1.81818">
+     <polyline points="0,0 24.1818,1.27273 23.4545,33.0909"/>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="128">
+   <objectgroup draworder="index">
+    <object id="0" x="-1.09091" y="-0.545455">
+     <polyline points="0,0 0,33.8182 33.4545,32.1818"/>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="129">
+   <objectgroup draworder="index">
+    <object id="0" x="-0.181818" y="31.0909">
+     <polyline points="0,0 30.7273,-0.363636 31.8182,-38.3636"/>
+    </object>
+   </objectgroup>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 1" width="10" height="10">
+  <data encoding="base64" compression="zlib">
+   eJzLYGBgyCASc+MQTyPBjFGMHwMAjbUoQg==
+  </data>
+ </layer>
+ <layer name="Tile Layer 2" width="10" height="10">
+  <data encoding="base64" compression="zlib">
+   eJxjYBi5wJCRgcGIkbA6R6AaJyLUUQMAAHI0AOs=
+  </data>
+ </layer>
+</map>
