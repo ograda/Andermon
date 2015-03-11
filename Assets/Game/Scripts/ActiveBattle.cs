@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class ActiveBattle : MonoBehaviour {
 
@@ -7,13 +8,14 @@ public class ActiveBattle : MonoBehaviour {
 	AndermonList andermonList; //List of ALL andermon
 	Vector3[] P1pos;
 	Vector3[] P2pos;
-	public Texture2D healthBG;
-	public Texture2D healthBar;
 	Object[] andermonObject;
+	Andermon[] P2team;
+	Andermon[] P1team;
+	public Text activeAndermon;
 
 
 	//On first battle, load automatically
-	void Start () {
+	void Start(){
 		//Treta  incoming
 		GameObject gameObject = GameObject.FindWithTag ("Player"); //Finding the player
 		player = gameObject.GetComponent<PlayerBehaviour>(); //Getting the script within the player
@@ -21,10 +23,7 @@ public class ActiveBattle : MonoBehaviour {
 		P1pos = new Vector3[6];
 		P2pos = new Vector3[6];
 		andermonObject = new GameObject[12];
-
-
-		//Had to hardcode due to problems, it's faster than calling Find() 12 times anyways;
-		SetPositions ();
+		SetPositions ();	//Had to hardcode due to problems, it's faster than calling Find() 12 times anyways;
 		Load ();
 	}
 
@@ -35,7 +34,48 @@ public class ActiveBattle : MonoBehaviour {
 		//TODO
 		float input = Input.GetAxisRaw("Vertical");
 		if (input == 1 && player.inCombat) {
-			player.EndBattle();
+			player.EndBattle(this); //Cache this script in playerBehaviour for reaload
+			DestroyAndermonObject();
+		}
+	}
+
+	//Loading battle on the same battlefield, hardcoded pq o unity e fdp e eh mais rapido anyways
+	//Quartenium formula x = sin(Y)sin(Z)cos(X)+cos(Y)cos(Z)sin(X) y = sin(Y)cos(Z)cos(X)+cos(Y)sin(Z)sin(X) z = cos(Y)sin(Z)cos(X)-sin(Y)cos(Z)sin(X) w = cos(Y)cos(Z)cos(X)-sin(Y)sin(Z)sin(X)
+	public void Load(){
+		//Cache both teams
+		P1team = player.playerTeam;
+		P2team = player.enemyTeam;
+
+		LoadAndermonObject(); //Carrega os andermon como objeto no battlefield
+		//Update UI
+	}
+
+	//Load every andermon to the battlefield
+	void LoadAndermonObject(){
+		for (int i = 0; i < 6; i++) {
+			if(P1team[i].id != 0)
+				andermonObject[i] = Instantiate(andermonList.andermon[P1team[i].id], P1pos[i], new Quaternion(0.5f, -0.5f, -0.5f, -0.5f));
+			else
+				andermonObject[i] = null;
+		}
+
+		for (int i = 0; i < 6; i++) {
+			if(P2team[i].id != 0)
+				andermonObject[i+6] = Instantiate(andermonList.andermon[P2team[i].id], P2pos[i], new Quaternion(-0.5f, 0.5f, -0.5f, -0.5f));
+			else
+				andermonObject[i+6] = null;
+		}
+	}
+
+	void DestroyAndermonObject(){
+		for (int i = 0; i < 6; i++) {
+			if(P1team[i].id != 0)
+				Destroy(andermonObject[i]);
+		}
+		
+		for (int i = 0; i < 6; i++) {
+			if(P2team[i].id != 0)
+				Destroy(andermonObject[i+6]);
 		}
 	}
 
@@ -52,52 +92,6 @@ public class ActiveBattle : MonoBehaviour {
 		P1pos [3] = new Vector3 (9988.396f, 9991.0f, 9978.759f);
 		P1pos [4] = new Vector3 (9971.716f, 9991.0f, 9955.848f);
 		P1pos [5] = new Vector3 (9988.396f, 9991.0f, 9955.848f);
-	}
-
-	//Loading battle on the same battlefield, hardcoded pq o unity e fdp e eh mais rapido anyways
-	//Quartenium formula x = sin(Y)sin(Z)cos(X)+cos(Y)cos(Z)sin(X) y = sin(Y)cos(Z)cos(X)+cos(Y)sin(Z)sin(X) z = cos(Y)sin(Z)cos(X)-sin(Y)cos(Z)sin(X) w = cos(Y)cos(Z)cos(X)-sin(Y)sin(Z)sin(X)
-	void Load(){
-		if(player.playerTeam[0].id != 0){
-			andermonObject[0] = Instantiate(andermonList.andermon[player.playerTeam[0].id], P1pos[0], new Quaternion(0.5f, -0.5f, -0.5f, -0.5f));
-			Debug.Log (andermonObject[0].ToString());
-		}
-		if(player.playerTeam[1].id != 0){
-			Instantiate(andermonList.andermon[player.playerTeam[1].id], P1pos[1], new Quaternion(0.5f, -0.5f, -0.5f, -0.5f));
-			
-		}
-		if(player.playerTeam[2].id != 0){
-			Instantiate(andermonList.andermon[player.playerTeam[2].id], P1pos[2], new Quaternion(0.5f, -0.5f, -0.5f, -0.5f));
-		}
-		if(player.playerTeam[3].id != 0){
-			Instantiate(andermonList.andermon[player.playerTeam[3].id], P1pos[3], new Quaternion(0.5f, -0.5f, -0.5f, -0.5f));
-			
-		}
-		if(player.playerTeam[4].id != 0){
-			Instantiate(andermonList.andermon[player.playerTeam[4].id], P1pos[4], new Quaternion(0.5f, -0.5f, -0.5f, -0.5f));
-			
-		}
-		if(player.playerTeam[5].id != 0){
-			Instantiate(andermonList.andermon[player.playerTeam[5].id], P1pos[5], new Quaternion(0.5f, -0.5f, -0.5f, -0.5f));
-			
-		}
-		if(player.enemyTeam[0].id != 0){
-			Instantiate(andermonList.andermon[player.enemyTeam[0].id], P2pos[0], new Quaternion(-0.5f, 0.5f, -0.5f, -0.5f));
-		}
-		if(player.enemyTeam[1].id != 0){
-			Instantiate(andermonList.andermon[player.enemyTeam[1].id], P2pos[1], new Quaternion(-0.5f, 0.5f, -0.5f, -0.5f));
-		}
-		if(player.enemyTeam[2].id != 0){
-			Instantiate(andermonList.andermon[player.enemyTeam[2].id], P2pos[2], new Quaternion(-0.5f, 0.5f, -0.5f, -0.5f));
-		}
-		if(player.enemyTeam[3].id != 0){
-			Instantiate(andermonList.andermon[player.enemyTeam[3].id], P2pos[3], new Quaternion(-0.5f, 0.5f, -0.5f, -0.5f));
-		}
-		if(player.enemyTeam[4].id != 0){
-			Instantiate(andermonList.andermon[player.enemyTeam[4].id], P2pos[4], new Quaternion(-0.5f, 0.5f, -0.5f, -0.5f));
-		}
-		if(player.enemyTeam[5].id != 0){
-			Instantiate(andermonList.andermon[player.enemyTeam[5].id], P2pos[5], new Quaternion(-0.5f, 0.5f, -0.5f, -0.5f));
-		}
 	}
 	
 }

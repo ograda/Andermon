@@ -12,6 +12,7 @@ public class PlayerBehaviour : MonoBehaviour {
 	GameObject currentBattle;
 	string currentSceneBattleName;
 	string sceneBattleName;
+	ActiveBattle activeBattleScript;
 	public Andermon[] playerTeam;
 	public Andermon[] enemyTeam;
 	
@@ -87,17 +88,19 @@ public class PlayerBehaviour : MonoBehaviour {
 			Destroy (currentBattle);
 			Application.LoadLevelAdditive (sceneBattleName);
 		}
-		//else
-		//Call battle reload, TODO
+		else{
+			activeBattleScript.Load(); //Reload battle
+		}
 		Debug.Log("Entrou em batalha"); //Erase
 		mainCamera.enabled = false;
 	}
 
 	//Battle has ended, returning to game
-	public void EndBattle(){
+	public void EndBattle(ActiveBattle script){
 		inCombat = false;
 		currentBattle = GameObject.FindWithTag("Battle"); //This is the field game.object
 		currentSceneBattleName = sceneBattleName;
+		activeBattleScript = script;
 		mainCamera.enabled = true;
 		Debug.Log("Saiu da batalha"); //Erase
 	}
