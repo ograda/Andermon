@@ -7,7 +7,6 @@ public class PlayerBehaviour : MonoBehaviour {
 	float maxSpeed;
 	public int facingDirection; //0 foward, 1 up, 2 right, 3 left
 	Animator animator;
-	Vector2 playerVelocity;
 	public bool inCombat;
 	public Camera mainCamera;
 	GameObject currentBattle;
@@ -19,7 +18,6 @@ public class PlayerBehaviour : MonoBehaviour {
 	void Start () {
 		maxSpeed = 250f;
 		animator = GetComponent<Animator> ();
-		playerVelocity = GetComponent<Rigidbody2D>.velocity;
 		sceneBattleName = "BattleForest";
 		facingDirection = 0;
 		//Temp
@@ -53,21 +51,21 @@ public class PlayerBehaviour : MonoBehaviour {
 			//Fisica de movimento, a gravidade do jogo e 0, a implementacao do movimento diagonal eh mais facil
 			//Anderson: Eu vou implementar o movimento em 8 direcoes quando os spirtes apropriados estiverem no lugar
 			if (moveV != 0 && moveH == 0){
-				playerVelocity = new Vector2 (0, moveV * maxSpeed);
+				GetComponent<Rigidbody2D>().velocity = new Vector2 (0, moveV * maxSpeed);
 				animator.SetInteger ("VerticalSpeed", (int)moveV);
 				animator.SetInteger ("HorizontalSpeed", 0);
 				if(moveV > 0) facingDirection = 1; //Up
 				else facingDirection = 0; //Down
 			}
 			else if(moveH != 0 && moveV == 0){
-				playerVelocity = new Vector2 (moveH * maxSpeed, 0);
+				GetComponent<Rigidbody2D>().velocity = new Vector2 (moveH * maxSpeed, 0);
 				animator.SetInteger ("VerticalSpeed", 0);
 				animator.SetInteger ("HorizontalSpeed", (int)moveH);
 				if(moveH > 0) facingDirection = 2; //Right
 				else facingDirection = 3; //Left
 			}
 			else{
-				playerVelocity = new Vector2 (0, 0);
+				GetComponent<Rigidbody2D>().velocity = new Vector2 (0, 0);
 				animator.SetInteger ("VerticalSpeed", 0);   //Codigo de animao dentro dos ifs
 				animator.SetInteger ("HorizontalSpeed", 0); //Fora dos ifs gera um bug pequeno
 			}
@@ -143,7 +141,7 @@ public class PlayerBehaviour : MonoBehaviour {
 				enemyTeam = script.GenerateTeam(facingDirection);
 				currentSceneBattleName = script.Terrain();
 				StartBattle();
-				playerVelocity = new Vector2 (0, 0);
+				GetComponent<Rigidbody2D>().velocity = new Vector2 (0, 0);
 				animator.SetInteger ("HorizontalSpeed", 0);
 				animator.SetInteger ("VerticalSpeed", 0);
 			}
