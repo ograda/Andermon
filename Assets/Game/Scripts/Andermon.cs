@@ -111,4 +111,9 @@ public class Andermon {
 
 	}
 
+	//Serial
+	public void Generate(){
+
+	}
+
 }

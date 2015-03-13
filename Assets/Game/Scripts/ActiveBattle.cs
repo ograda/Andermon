@@ -5,13 +5,18 @@ using UnityEngine.UI;
 public class ActiveBattle : MonoBehaviour {
 
 	PlayerBehaviour player; //The main player script
-	AndermonList andermonList; //List of ALL andermon
+	AndermonList andermonList; //List of ALL andermon, this script can be found in player
 	Vector3[] P1pos;
 	Vector3[] P2pos;
-	Object[] andermonObject;
+	Object[] andermonObject; //0 a 5 P1 , 6 a 11 P2
 	Andermon[] P2team;
 	Andermon[] P1team;
-	public Text activeAndermon;
+
+	//activeAndermon UI elements
+	public GameObject[] andermonBattleInfo; //0 a 5 P1 , 6 a 11 P2 // GameObject thast contains all UI elements of the andermon in the battlefield
+	public Text[] healthText; 
+	public Text[] actionText;
+	public Text[] nameText;
 
 
 	//On first battle, load automatically
@@ -20,9 +25,9 @@ public class ActiveBattle : MonoBehaviour {
 		GameObject gameObject = GameObject.FindWithTag ("Player"); //Finding the player
 		player = gameObject.GetComponent<PlayerBehaviour>(); //Getting the script within the player
 		andermonList = gameObject.GetComponent<AndermonList> (); //Getting the script with all andermon information
-		P1pos = new Vector3[6];
-		P2pos = new Vector3[6];
-		andermonObject = new GameObject[12];
+		P1pos = new Vector3[6]; //nao mexe Anderson
+		P2pos = new Vector3[6]; //nao mexe Anderson
+		andermonObject = new GameObject[12]; //activeAndermonObject on battlefield
 		SetPositions ();	//Had to hardcode due to problems, it's faster than calling Find() 12 times anyways;
 		Load ();
 	}
@@ -47,7 +52,7 @@ public class ActiveBattle : MonoBehaviour {
 		P2team = player.enemyTeam;
 
 		LoadAndermonObject(); //Carrega os andermon como objeto no battlefield
-		//Update UI
+		LoadUI (); //Load the UI
 	}
 
 	//Load every andermon to the battlefield
@@ -67,6 +72,25 @@ public class ActiveBattle : MonoBehaviour {
 		}
 	}
 
+	void LoadUI(){
+		Andermon[] actualTeam = P1team; 
+		for (int i = 0, j = 0; i < 12; i++, j++) { //j goes through the actualTeam array position, i for everything else
+			if(i == 6){
+				actualTeam = P2team;
+				j = 0; //reset j to go through the second team
+			}
+			if(actualTeam[j].id != 0){
+				andermonBattleInfo[i].SetActive (true);
+				healthText[i].text = "" + actualTeam[j].actualHealth + " / " + actualTeam[j].maxHealth;
+				actionText[i].text = "" + (50 + actualTeam[j].actualAgility); //TODO battle mechanic 
+				nameText[i].text = actualTeam[j].nickName;
+			}
+			else
+				andermonBattleInfo[i].SetActive (false);
+			
+		}
+	}
+
 	void DestroyAndermonObject(){
 		for (int i = 0; i < 6; i++) {
 			if(P1team[i].id != 0)
@@ -79,6 +103,7 @@ public class ActiveBattle : MonoBehaviour {
 		}
 	}
 
+	//Hardcoded positions, don't touch
 	void SetPositions(){
 		P2pos [0] = new Vector3 (9971.716f, 9991.0f, 10030.0f);
 		P2pos [1] = new Vector3 (9988.396f, 9991.0f, 10030.0f);
