@@ -46,13 +46,16 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Game\Scripts\ActionList.cs" />
      <Compile Include="Assets\Game\Scripts\ActiveBattle.cs" />
      <Compile Include="Assets\Game\Scripts\Andermon.cs" />
      <Compile Include="Assets\Game\Scripts\AndermonList.cs" />
      <Compile Include="Assets\Game\Scripts\AndermonPassive.cs" />
+     <Compile Include="Assets\Game\Scripts\ArtificialIntelligence.cs" />
      <Compile Include="Assets\Game\Scripts\NPCteste.cs" />
      <Compile Include="Assets\Game\Scripts\PlayerBehaviour.cs" />
      <Compile Include="Assets\Game\Scripts\Teleport.cs" />
+     <Compile Include="Assets\Game\Scripts\TurnManager.cs" />
      <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\SortingLayerExposed.cs" />
      <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TileAnimator.cs" />
      <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledMap.cs" />

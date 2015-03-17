@@ -39,7 +39,9 @@ public class Andermon {
 	public int agility;
 	public int actualAgility;
 	public Condition condition;
-	//public Ability[] ability; //TODO
+	public int[] actions; //current actions of the andermon, this will be called by the player and will be used to execute a script which contains every action in the game
+	public int passiveID; //TODO
+	//TODO code wich contains every action ID an andermon can learn and every levelup stat
 	//public string serial; //TODO
 
 	//Construtor para o player e trainer

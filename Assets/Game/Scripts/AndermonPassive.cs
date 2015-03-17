@@ -7,6 +7,7 @@ public class AndermonPassive : MonoBehaviour {
 	public string[] text;
 	public string terrainName;
 	public Andermon[] enemyTeam;
+	public ArtificialIntelligence.IAlevel IAtype; //Check ArtificialInteligence script for details
 
 	/// <summary>
 	/// TODO
@@ -20,11 +21,15 @@ public class AndermonPassive : MonoBehaviour {
 		enemyTeam = new Andermon[6];
 	}
 
+	public void TalkToPlayer(int facingDirection){
+		animator.SetInteger("Direction", facingDirection);
+		Debug.Log (text[0]); //This can be changed in the editor
+	}
+
 	//Generates the enemy team for the player
-	public Andermon[] GenerateTeam(int facingDirection){
-		animator.SetInteger ("Direction", facingDirection);
-		Debug.Log (text[0]);
+	public Andermon[] GenerateTeam(){
 		//Temporary solution, we dont have a manager codded YET
+		IAtype = ArtificialIntelligence.IAlevel.wildEasy;
 		if(Random.Range (1,7) % 2 != 0) enemyTeam [1] = new Andermon (0, "Ratty", "Ratty", 1, Andermon.Type.normal, 6, 6, 2, 0, 1, 45, Andermon.Condition.alive);
 		else enemyTeam [1] = new Andermon (2, "Ratty", "Ratty", 1, Andermon.Type.normal, 6, 6, 2, 0, 1, 45, Andermon.Condition.alive);
 		if(Random.Range (1,7) % 2 != 0) enemyTeam [2] = new Andermon (0, "Ratty", "Ratty", 1, Andermon.Type.normal, 6, 6, 2, 0, 1, 45, Andermon.Condition.alive);

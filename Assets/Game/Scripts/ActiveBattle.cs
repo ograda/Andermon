@@ -6,17 +6,21 @@ public class ActiveBattle : MonoBehaviour {
 
 	PlayerBehaviour player; //The main player script
 	AndermonList andermonList; //List of ALL andermon, this script can be found in player
+	ActionList actionList; //List of ALL actions in the game with action code
+	public TurnManager turnManager; //Reference to the script that manages player turn
+	public ArtificialIntelligence.IAlevel IAtype; //This is used by TurnManager, see artificialIntelligence script for details about the structure
 	Vector3[] P1pos;
 	Vector3[] P2pos;
 	Object[] andermonObject; //0 a 5 P1 , 6 a 11 P2
-	Andermon[] P2team;
-	Andermon[] P1team;
+	public Andermon[] P2team;
+	public Andermon[] P1team;
 
 	//activeAndermon UI elements
 	public GameObject[] andermonBattleInfo; //0 a 5 P1 , 6 a 11 P2 // GameObject thast contains all UI elements of the andermon in the battlefield
 	public Text[] healthText; 
 	public Text[] actionText;
 	public Text[] nameText;
+	public Canvas leftCanvas;
 
 
 	//On first battle, load automatically
@@ -32,16 +36,14 @@ public class ActiveBattle : MonoBehaviour {
 		Load ();
 	}
 
-
-	
-	//Update is called once per frame
-	void Update () {
-		//TODO
-		float input = Input.GetAxisRaw("Vertical");
-		if (input == 1 && player.inCombat) {
-			player.EndBattle(this); //Cache this script in playerBehaviour for reaload
-			DestroyAndermonObject();
-		}
+	//Finishing  the battle
+	public void EndBattle(){
+		for (int i = 0; i < 6; i++) //Recover stats changes after battle
+						P1team [i].AdjustStats ();
+		player.playerTeam = P1team; //Update player team after battle
+		player.EndBattle(this); //Cache this script in playerBehaviour for reaload
+		DestroyAndermonObject();
+		//TODO GAMEOVER
 	}
 
 	//Loading battle on the same battlefield, hardcoded pq o unity e fdp e eh mais rapido anyways
@@ -50,9 +52,10 @@ public class ActiveBattle : MonoBehaviour {
 		//Cache both teams
 		P1team = player.playerTeam;
 		P2team = player.enemyTeam;
-
+		IAtype = player.IAtype;
 		LoadAndermonObject(); //Carrega os andermon como objeto no battlefield
 		LoadUI (); //Load the UI
+		turnManager.ConfigureBattle(); //Decides first turn and set handcaps if necessary
 	}
 
 	//Load every andermon to the battlefield
@@ -87,7 +90,6 @@ public class ActiveBattle : MonoBehaviour {
 			}
 			else
 				andermonBattleInfo[i].SetActive (false);
-			
 		}
 	}
 
