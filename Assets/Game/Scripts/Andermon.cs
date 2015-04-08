@@ -38,6 +38,7 @@ public class Andermon {
 	public int actualDefense;
 	public int agility;
 	public int actualAgility;
+	public int actionPoint;
 	public Condition condition;
 	public int[] actions; //current actions of the andermon, this will be called by the player and will be used to execute a script which contains every action in the game
 	public int passiveID; //TODO
@@ -62,6 +63,7 @@ public class Andermon {
 		this.actualDefense = defense;
 		this.agility = agility;
 		this.actualAgility = agility;
+		this.actionPoint = 0;
 		this.condition = condition;
 	}
 
@@ -102,10 +104,11 @@ public class Andermon {
 
 	//AdjustStats after battle
 	public void AdjustStats(){
-		this.actualAttack = attack;
-		this.actualMagic = magic;
-		this.actualDefense = defense;
-		this.actualAgility = agility;
+		actualAttack = attack;
+		actualMagic = magic;
+		actualDefense = defense;
+		actualAgility = agility;
+		actionPoint = 0;
 	}
 
 	//LevelUp

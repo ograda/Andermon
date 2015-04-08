@@ -3,9 +3,17 @@ using System.Collections;
 
 public class PlayerBehaviour : MonoBehaviour {
 
-	//Global by necessity
+	/****** Global Var ******/
+
+	public enum Direction{
+		down,
+		up,
+		right,
+		left
+	}
+
 	float maxSpeed;
-	public int facingDirection; //0 foward, 1 up, 2 right, 3 left
+	public Direction facingDirection;
 	Animator animator; //Animator attached to the player, this is used in movement
 	public bool inCombat; 
 	public ArtificialIntelligence.IAlevel IAtype; //See artificialintelligence script for the full structure, this is for battle
@@ -22,11 +30,11 @@ public class PlayerBehaviour : MonoBehaviour {
 		maxSpeed = 250f;
 		animator = GetComponent<Animator> ();
 		sceneBattleName = "BattleForest";
-		facingDirection = 0;
+		facingDirection = Direction.down;
 		//Temp
 		playerTeam = new Andermon[6];
 		playerTeam [0] = new Andermon (1, "Kliy", "MeuMon", 2, Andermon.Type.normal, 10, 10, 3, 1, 2, 50, Andermon.Condition.alive);
-		playerTeam [1] = new Andermon (0, "Kliy", "MeuMon", 2, Andermon.Type.normal, 10, 10, 3, 1, 2, 50, Andermon.Condition.alive);
+		playerTeam [1] = new Andermon (1, "Kliy", "MeuMon", 2, Andermon.Type.normal, 10, 10, 3, 1, 2, 50, Andermon.Condition.alive);
 		playerTeam [2] = new Andermon (0, "Kliy", "MeuMon", 2, Andermon.Type.normal, 10, 10, 3, 1, 2, 50, Andermon.Condition.alive);
 		playerTeam [3] = new Andermon (0, "Kliy", "MeuMon", 2, Andermon.Type.normal, 10, 10, 3, 1, 2, 50, Andermon.Condition.alive);
 		playerTeam [4] = new Andermon (0, "Kliy", "MeuMon", 2, Andermon.Type.normal, 10, 10, 3, 1, 2, 50, Andermon.Condition.alive);
@@ -57,15 +65,15 @@ public class PlayerBehaviour : MonoBehaviour {
 				GetComponent<Rigidbody2D>().velocity = new Vector2 (0, moveV * maxSpeed);
 				animator.SetInteger ("VerticalSpeed", (int)moveV);
 				animator.SetInteger ("HorizontalSpeed", 0);
-				if(moveV > 0) facingDirection = 1; //Up
-				else facingDirection = 0; //Down
+				if(moveV > 0) facingDirection = Direction.up;
+				else facingDirection = Direction.down;
 			}
 			else if(moveH != 0 && moveV == 0){
 				GetComponent<Rigidbody2D>().velocity = new Vector2 (moveH * maxSpeed, 0);
 				animator.SetInteger ("VerticalSpeed", 0);
 				animator.SetInteger ("HorizontalSpeed", (int)moveH);
-				if(moveH > 0) facingDirection = 2; //Right
-				else facingDirection = 3; //Left
+				if(moveH > 0) facingDirection = Direction.right;
+				else facingDirection = Direction.left; //Left
 			}
 			else{
 				GetComponent<Rigidbody2D>().velocity = new Vector2 (0, 0);
@@ -78,6 +86,57 @@ public class PlayerBehaviour : MonoBehaviour {
 				Examine();
 		}
 	}
+
+	//Codigo de interacao com o ambiente, manda um laser pra onde o player ta olhando e ve que tipo de objeto que o laser colidiu
+	void Examine(){
+		RaycastHit2D hit;
+		Vector2 startPoint;
+		Vector2 direction;
+		float distance = 3.0f;
+		
+		//Checa para onde vou mandar o laser
+		if (facingDirection == Direction.down) {
+			startPoint = new Vector2 (transform.position.x, transform.position.y - 17);
+			direction = Vector2.up;
+			direction *= -1;
+		}
+		else if (facingDirection == Direction.up){
+			startPoint = new Vector2 (transform.position.x, transform.position.y + 17);
+			direction = Vector2.up;
+			
+		}
+		else if (facingDirection == Direction.right){
+			startPoint = new Vector2 (transform.position.x + 17, transform.position.y);
+			direction = Vector2.right;
+		}
+		else { //left
+			startPoint = new Vector2 (transform.position.x - 17, transform.position.y);
+			direction = Vector2.right;
+			direction *= -1;
+		}
+		
+		//checa o que o laser colidiu
+		if (hit = Physics2D.Raycast (startPoint, direction, distance)) {
+			if(hit.collider.tag == "NPC"){ //essa e a tag de npc padrao que so fala
+				hit.collider.SendMessage("talk", facingDirection); //Manda pro npc o lado em que o player esta olhando
+			}
+			if(hit.collider.tag == "AndermonP"){ //essa e a tag de andermon que nao se mexe
+				AndermonPassive script;
+				inCombat = true;
+				script = hit.collider.GetComponent<AndermonPassive>();
+				enemyTeam = script.GenerateTeam();
+				script.TalkToPlayer(facingDirection);
+				currentSceneBattleName = script.Terrain();
+				IAtype = script.IAtype;
+				StartBattle();
+				GetComponent<Rigidbody2D>().velocity = new Vector2 (0, 0);
+				animator.SetInteger ("HorizontalSpeed", 0);
+				animator.SetInteger ("VerticalSpeed", 0);
+			}
+		}
+	}
+
+	/****** Battle ******/
 	
 	//Combat method, calling battle scene
 	void StartBattle(){
@@ -100,60 +159,11 @@ public class PlayerBehaviour : MonoBehaviour {
 	//Battle has ended, returning to game
 	public void EndBattle(ActiveBattle script){
 		inCombat = false;
-		currentBattle = GameObject.FindWithTag("Battle"); //This is the field game.object
+		currentBattle = GameObject.FindWithTag("Battle"); //This is the folder game.object
 		currentSceneBattleName = sceneBattleName;
 		activeBattleScript = script;
 		mainCamera.enabled = true;
 		Debug.Log("Saiu da batalha"); //Erase
-	}
-
-	//Codigo de interacao com o ambiente, manda um laser pra onde o player ta olhando e ve que tipo de objeto que o laser colidiu
-	void Examine(){
-		RaycastHit2D hit;
-		Vector2 startPoint;
-		Vector2 direction;
-		float distance = 3.0f;
-
-		//Checa para onde vou mandar o laser
-		if (facingDirection == 0) { // Foward
-			startPoint = new Vector2 (transform.position.x, transform.position.y - 17);
-			direction = Vector2.up;
-			direction *= -1;
-		}
-		else if (facingDirection == 1){ //Up
-			startPoint = new Vector2 (transform.position.x, transform.position.y + 17);
-			direction = Vector2.up;
-
-		}
-		else if (facingDirection == 2){ //Right
-			startPoint = new Vector2 (transform.position.x + 17, transform.position.y);
-			direction = Vector2.right;
-		}
-		else {
-			startPoint = new Vector2 (transform.position.x - 17, transform.position.y);
-			direction = Vector2.right;
-			direction *= -1;
-		}
-
-		//checa o que o laser colidiu
-		if (hit = Physics2D.Raycast (startPoint, direction, distance)) {
-			if(hit.collider.tag == "NPC"){ //essa e a tag de npc padrao que so fala
-				hit.collider.SendMessage("talk", facingDirection);
-			}
-			if(hit.collider.tag == "AndermonP"){ //essa e a tag de andermon que nao se mexe
-				AndermonPassive script;
-				inCombat = true;
-				script = hit.collider.GetComponent<AndermonPassive>();
-				enemyTeam = script.GenerateTeam();
-				script.TalkToPlayer(facingDirection);
-				currentSceneBattleName = script.Terrain();
-				IAtype = script.IAtype;
-				StartBattle();
-				GetComponent<Rigidbody2D>().velocity = new Vector2 (0, 0);
-				animator.SetInteger ("HorizontalSpeed", 0);
-				animator.SetInteger ("VerticalSpeed", 0);
-			}
-		}
 	}
 
 }

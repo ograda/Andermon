@@ -21,8 +21,8 @@ public class AndermonPassive : MonoBehaviour {
 		enemyTeam = new Andermon[6];
 	}
 
-	public void TalkToPlayer(int facingDirection){
-		animator.SetInteger("Direction", facingDirection);
+	public void TalkToPlayer(PlayerBehaviour.Direction facingDirection){
+		animator.SetInteger("Direction", (int) facingDirection);
 		Debug.Log (text[0]); //This can be changed in the editor
 	}
 

@@ -10,8 +10,8 @@ public class NPCteste : MonoBehaviour {
 		animator = GetComponent<Animator> ();
 	}
 	
-	void talk(int facingDirection){
-		animator.SetInteger ("Direction", facingDirection);
+	void talk(PlayerBehaviour.Direction facingDirection){
+		animator.SetInteger ("Direction", (int) facingDirection);
 		Debug.Log (text[0]);
 	}
 }

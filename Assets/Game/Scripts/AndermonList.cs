@@ -3,7 +3,8 @@ using System.Collections;
 
 public class AndermonList : MonoBehaviour {
 
-	public GameObject[] andermon;	//Mantenha em ordem alfabetica
+	public GameObject[] andermonObject;	//Mantenha em ordem alfabetica
+
 	//Ability TODO
 
 

@@ -1,12 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Game\Scripts\ArtificialIntelligence.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Game\Scripts\AndermonList.cs">
     <Files>
-      <File FileName="Assets\Game\Scripts\TurnManager.cs" Line="20" Column="24" />
-      <File FileName="Assets\Game\Scripts\ActiveBattle.cs" Line="98" Column="32" />
-      <File FileName="Assets\Game\Scripts\PlayerBehaviour.cs" Line="156" Column="1" />
-      <File FileName="Assets\Game\Scripts\ArtificialIntelligence.cs" Line="4" Column="30" />
-      <File FileName="Assets\Game\Scripts\AndermonPassive.cs" Line="31" Column="1" />
+      <File FileName="Assets\Game\Scripts\Common.cs" Line="10" Column="18" />
+      <File FileName="Assets\Game\Scripts\TurnManager.cs" Line="18" Column="7" />
+      <File FileName="Assets\Game\Scripts\PlayerBehaviour.cs" Line="37" Column="35" />
+      <File FileName="Assets\Game\Scripts\ArtificialIntelligence.cs" Line="1" Column="1" />
+      <File FileName="Assets\Game\Scripts\AndermonPassive.cs" Line="1" Column="1" />
+      <File FileName="Assets\Game\Scripts\NPCteste.cs" Line="1" Column="1" />
+      <File FileName="Assets\Game\Scripts\Andermon.cs" Line="44" Column="29" />
+      <File FileName="Assets\Game\Scripts\AndermonList.cs" Line="12" Column="1" />
+      <File FileName="Assets\Game\Scripts\ActiveBattle.cs" Line="90" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
